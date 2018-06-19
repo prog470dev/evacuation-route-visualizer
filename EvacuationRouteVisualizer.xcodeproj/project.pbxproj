@@ -1,0 +1,434 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		64C9FEE1D7A4C07C04365E25 /* Pods_EvacuationRouteVisualizer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 723E9F2DB64E5C0A5F1C670E /* Pods_EvacuationRouteVisualizer.framework */; };
+		D626464120D95D7E00F96B0F /* ApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D626464020D95D7E00F96B0F /* ApiClient.swift */; };
+		D64925BE20AF02C100AC6669 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64925BD20AF02C100AC6669 /* AppDelegate.swift */; };
+		D64925C020AF02C100AC6669 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64925BF20AF02C100AC6669 /* ViewController.swift */; };
+		D64925C520AF02C100AC6669 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D64925C420AF02C100AC6669 /* Assets.xcassets */; };
+		D64925C820AF02C100AC6669 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D64925C620AF02C100AC6669 /* LaunchScreen.storyboard */; };
+		D64925D020AF1B5300AC6669 /* Evacuee.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64925CF20AF1B5300AC6669 /* Evacuee.swift */; };
+		D64925D220AF1BE400AC6669 /* DataCliant.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64925D120AF1BE400AC6669 /* DataCliant.swift */; };
+		D64925D420AF2B3A00AC6669 /* DBStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64925D320AF2B3A00AC6669 /* DBStub.swift */; };
+		D6C4AD6520B02CC800647F5B /* EvacueeMKPointAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C4AD6420B02CC800647F5B /* EvacueeMKPointAnnotation.swift */; };
+		D6C4AD6720B0398200647F5B /* IndividualData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C4AD6620B0398200647F5B /* IndividualData.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		4EE0730CB2496F8900FA5428 /* Pods-EvacuationRouteVisualizer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EvacuationRouteVisualizer.release.xcconfig"; path = "Pods/Target Support Files/Pods-EvacuationRouteVisualizer/Pods-EvacuationRouteVisualizer.release.xcconfig"; sourceTree = "<group>"; };
+		723E9F2DB64E5C0A5F1C670E /* Pods_EvacuationRouteVisualizer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EvacuationRouteVisualizer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AB0575D897500D068CD5A12B /* Pods-EvacuationRouteVisualizer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EvacuationRouteVisualizer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-EvacuationRouteVisualizer/Pods-EvacuationRouteVisualizer.debug.xcconfig"; sourceTree = "<group>"; };
+		D626464020D95D7E00F96B0F /* ApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiClient.swift; sourceTree = "<group>"; };
+		D64925BA20AF02C100AC6669 /* EvacuationRouteVisualizer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EvacuationRouteVisualizer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D64925BD20AF02C100AC6669 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		D64925BF20AF02C100AC6669 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		D64925C420AF02C100AC6669 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D64925C720AF02C100AC6669 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		D64925C920AF02C100AC6669 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D64925CF20AF1B5300AC6669 /* Evacuee.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Evacuee.swift; sourceTree = "<group>"; };
+		D64925D120AF1BE400AC6669 /* DataCliant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataCliant.swift; sourceTree = "<group>"; };
+		D64925D320AF2B3A00AC6669 /* DBStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBStub.swift; sourceTree = "<group>"; };
+		D6C4AD6420B02CC800647F5B /* EvacueeMKPointAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvacueeMKPointAnnotation.swift; sourceTree = "<group>"; };
+		D6C4AD6620B0398200647F5B /* IndividualData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndividualData.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D64925B720AF02C100AC6669 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				64C9FEE1D7A4C07C04365E25 /* Pods_EvacuationRouteVisualizer.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		59516A0B132E2CEC184E9434 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				723E9F2DB64E5C0A5F1C670E /* Pods_EvacuationRouteVisualizer.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6033EB02A6F15A404A2FF3BF /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				AB0575D897500D068CD5A12B /* Pods-EvacuationRouteVisualizer.debug.xcconfig */,
+				4EE0730CB2496F8900FA5428 /* Pods-EvacuationRouteVisualizer.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		D626464220D961EC00F96B0F /* Test */ = {
+			isa = PBXGroup;
+			children = (
+				D64925D320AF2B3A00AC6669 /* DBStub.swift */,
+				D64925D120AF1BE400AC6669 /* DataCliant.swift */,
+			);
+			path = Test;
+			sourceTree = "<group>";
+		};
+		D64925B120AF02C100AC6669 = {
+			isa = PBXGroup;
+			children = (
+				D64925BC20AF02C100AC6669 /* EvacuationRouteVisualizer */,
+				D64925BB20AF02C100AC6669 /* Products */,
+				6033EB02A6F15A404A2FF3BF /* Pods */,
+				59516A0B132E2CEC184E9434 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		D64925BB20AF02C100AC6669 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D64925BA20AF02C100AC6669 /* EvacuationRouteVisualizer.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D64925BC20AF02C100AC6669 /* EvacuationRouteVisualizer */ = {
+			isa = PBXGroup;
+			children = (
+				D64925BD20AF02C100AC6669 /* AppDelegate.swift */,
+				D626464020D95D7E00F96B0F /* ApiClient.swift */,
+				D6C4AD6620B0398200647F5B /* IndividualData.swift */,
+				D64925CF20AF1B5300AC6669 /* Evacuee.swift */,
+				D6C4AD6420B02CC800647F5B /* EvacueeMKPointAnnotation.swift */,
+				D64925BF20AF02C100AC6669 /* ViewController.swift */,
+				D64925C420AF02C100AC6669 /* Assets.xcassets */,
+				D64925C620AF02C100AC6669 /* LaunchScreen.storyboard */,
+				D64925C920AF02C100AC6669 /* Info.plist */,
+				D626464220D961EC00F96B0F /* Test */,
+			);
+			path = EvacuationRouteVisualizer;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D64925B920AF02C100AC6669 /* EvacuationRouteVisualizer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D64925CC20AF02C100AC6669 /* Build configuration list for PBXNativeTarget "EvacuationRouteVisualizer" */;
+			buildPhases = (
+				0BCBEA168E225B5F0012711E /* [CP] Check Pods Manifest.lock */,
+				D64925B620AF02C100AC6669 /* Sources */,
+				D64925B720AF02C100AC6669 /* Frameworks */,
+				D64925B820AF02C100AC6669 /* Resources */,
+				58A09A2ECFE1C19AFE540A7C /* [CP] Embed Pods Frameworks */,
+				C04735117ADB4595A7AF2A9F /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = EvacuationRouteVisualizer;
+			productName = EvacuationRouteVisualizer;
+			productReference = D64925BA20AF02C100AC6669 /* EvacuationRouteVisualizer.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D64925B220AF02C100AC6669 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0920;
+				LastUpgradeCheck = 0920;
+				ORGANIZATIONNAME = prog470dev;
+				TargetAttributes = {
+					D64925B920AF02C100AC6669 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = D64925B520AF02C100AC6669 /* Build configuration list for PBXProject "EvacuationRouteVisualizer" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = D64925B120AF02C100AC6669;
+			productRefGroup = D64925BB20AF02C100AC6669 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D64925B920AF02C100AC6669 /* EvacuationRouteVisualizer */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D64925B820AF02C100AC6669 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D64925C820AF02C100AC6669 /* LaunchScreen.storyboard in Resources */,
+				D64925C520AF02C100AC6669 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		0BCBEA168E225B5F0012711E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-EvacuationRouteVisualizer-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		58A09A2ECFE1C19AFE540A7C /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-EvacuationRouteVisualizer/Pods-EvacuationRouteVisualizer-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-EvacuationRouteVisualizer/Pods-EvacuationRouteVisualizer-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C04735117ADB4595A7AF2A9F /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-EvacuationRouteVisualizer/Pods-EvacuationRouteVisualizer-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D64925B620AF02C100AC6669 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D6C4AD6520B02CC800647F5B /* EvacueeMKPointAnnotation.swift in Sources */,
+				D64925D220AF1BE400AC6669 /* DataCliant.swift in Sources */,
+				D64925D020AF1B5300AC6669 /* Evacuee.swift in Sources */,
+				D626464120D95D7E00F96B0F /* ApiClient.swift in Sources */,
+				D6C4AD6720B0398200647F5B /* IndividualData.swift in Sources */,
+				D64925C020AF02C100AC6669 /* ViewController.swift in Sources */,
+				D64925BE20AF02C100AC6669 /* AppDelegate.swift in Sources */,
+				D64925D420AF2B3A00AC6669 /* DBStub.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		D64925C620AF02C100AC6669 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D64925C720AF02C100AC6669 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		D64925CA20AF02C100AC6669 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		D64925CB20AF02C100AC6669 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		D64925CD20AF02C100AC6669 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = AB0575D897500D068CD5A12B /* Pods-EvacuationRouteVisualizer.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = J4LJ36D53M;
+				INFOPLIST_FILE = EvacuationRouteVisualizer/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = fcimsb55yn.com.test.EvacuationRouteVisualizer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D64925CE20AF02C100AC6669 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4EE0730CB2496F8900FA5428 /* Pods-EvacuationRouteVisualizer.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = J4LJ36D53M;
+				INFOPLIST_FILE = EvacuationRouteVisualizer/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = fcimsb55yn.com.test.EvacuationRouteVisualizer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D64925B520AF02C100AC6669 /* Build configuration list for PBXProject "EvacuationRouteVisualizer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D64925CA20AF02C100AC6669 /* Debug */,
+				D64925CB20AF02C100AC6669 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D64925CC20AF02C100AC6669 /* Build configuration list for PBXNativeTarget "EvacuationRouteVisualizer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D64925CD20AF02C100AC6669 /* Debug */,
+				D64925CE20AF02C100AC6669 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D64925B220AF02C100AC6669 /* Project object */;
+}
