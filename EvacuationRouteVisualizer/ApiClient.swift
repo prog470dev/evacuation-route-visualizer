@@ -42,7 +42,11 @@ class ApiClient {
         let url = "https://goapp1-207110.appspot.com/getUser"
         Alamofire.request(url, method: .get).responseJSON(completionHandler: {response in
             
-            guard let data = response.result.value else {
+            let statusCode: Int = (response.response?.statusCode)!
+            print("statusCode(@get): ", statusCode)
+            guard statusCode == 200 else { return } //レスポンスが正常でないときは無視 (無視しないと落ちる)
+            
+            guard let data = response.result.value else {   //[?] ここの処理の必要性は？
                 return
             }
 
@@ -64,22 +68,18 @@ class ApiClient {
     
     //NOTE: 呼び出すときはUUIDを引数に与える
     func registEvacuee(id: String, coordinate: CLLocationCoordinate2D){
-//        //TODO: 登録済みかどうかの確認
-//        var alreadyRegist = DBStub.instance.findID(id: id)
-//        guard !alreadyRegist else { return }
-//        //TODO: クライアントをDBへ登録（直接evacueesには登録しない）
-//        DBStub.instance.addCliant(id: id, latitude: String(coordinate.latitude), longitude: String(coordinate.longitude))
         
         //自分をDBに登録
-        //APIテスト
         var url = "https://goapp1-207110.appspot.com/setUser?"
         url += "id=" + id
         url += "&latitude=" + String("\(coordinate.latitude)")
         url += "&longitude=" + String("\(coordinate.longitude)")
         
-        print("url: ", url)
-        
         Alamofire.request(url, method: .get).responseJSON(completionHandler: {response in
+            
+            let statusCode: Int = (response.response?.statusCode)!
+            print("statusCode(@set): ", statusCode)
+            guard statusCode == 200 else { return } //レスポンスが正常でないときは無視 (無視しないと落ちる)
             
             //TODO: 書き込み整合の確認
             guard let data = response.data else {
