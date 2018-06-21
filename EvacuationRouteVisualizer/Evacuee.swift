@@ -9,7 +9,8 @@
 import Foundation
 import MapKit
 
-class Evacuee {
+//TODO:
+class Evacuee2 {
     
     let id: String!
     var latitude: CLLocationDegrees!

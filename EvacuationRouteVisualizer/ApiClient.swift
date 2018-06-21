@@ -11,6 +11,18 @@ import MapKit
 import Alamofire
 import SwiftyJSON
 
+struct Evacuee {
+    let id: String
+    var latitude: Double
+    var longitude: Double
+    
+    init(id: String, latitude: Double, longitude: Double){
+        self.id = id
+        self.latitude = latitude
+        self.longitude = longitude
+    }
+}
+
 class ApiClient {
     static let instance = ApiClient()
     
@@ -18,44 +30,29 @@ class ApiClient {
     var evacuees: [String:Evacuee] = [:]
     
     private init(){
-        Timer.scheduledTimer(timeInterval: 0.1,
+        Timer.scheduledTimer(timeInterval: 1.0,
                              target: self,
-                             selector: #selector(ApiClient.dbRequest(timer:)),
+                             selector: #selector(ApiClient.getLocations(timer:)),
                              userInfo: nil,
                              repeats: true)
     }
     
-    @objc func dbRequest(timer: Timer){
-        let currentEvacuees: [(id: String, latitude: String, longitude: String)]!
+    @objc func getLocations(timer: Timer){
         
-        currentEvacuees = DBStub.instance.getList() //モック
-        
-        for var e in currentEvacuees {
-            if(!evacueeSet.contains(e.id)){
-                evacueeSet.insert(e.id)
-            }
-            
-            evacuees.updateValue(Evacuee(id: e.id, latitude: CLLocationDegrees(e.latitude)!, longitude: CLLocationDegrees(e.longitude)!), forKey: e.id)
-        }
-        
-        
-        //APIテスト
         let url = "https://goapp1-207110.appspot.com/getUser"
         Alamofire.request(url, method: .get).responseJSON(completionHandler: {response in
             
-            guard let object = response.result.value else {
+            guard let data = response.result.value else {
                 return
             }
-            
-            let json = JSON(object)
 
-//            print(json)
+            let json = JSON(data)
             for e in json {
-                print("=====")
-                print(e.0)
-                print(e.1["id"])
+                var eva = Evacuee(id: e.1["id"].string!,
+                                  latitude: e.1["latitude"].double!,
+                                  longitude: e.1["longitude"].double!)
+                self.evacuees.updateValue(eva, forKey: e.1["id"].string!)
             }
-//
             
         })
         
@@ -67,13 +64,29 @@ class ApiClient {
     
     //NOTE: 呼び出すときはUUIDを引数に与える
     func registEvacuee(id: String, coordinate: CLLocationCoordinate2D){
-        //TODO: 登録済みかどうかの確認
-        var alreadyRegist = DBStub.instance.findID(id: id)
+//        //TODO: 登録済みかどうかの確認
+//        var alreadyRegist = DBStub.instance.findID(id: id)
+//        guard !alreadyRegist else { return }
+//        //TODO: クライアントをDBへ登録（直接evacueesには登録しない）
+//        DBStub.instance.addCliant(id: id, latitude: String(coordinate.latitude), longitude: String(coordinate.longitude))
         
-        guard !alreadyRegist else { return }
+        //自分をDBに登録
+        //APIテスト
+        var url = "https://goapp1-207110.appspot.com/setUser?"
+        url += "id=" + id
+        url += "&latitude=" + String("\(coordinate.latitude)")
+        url += "&longitude=" + String("\(coordinate.longitude)")
         
-        //TODO: クライアントをDBへ登録（直接evacueesには登録しない）
-        DBStub.instance.addCliant(id: id, latitude: String(coordinate.latitude), longitude: String(coordinate.longitude))
+        print("url: ", url)
+        
+        Alamofire.request(url, method: .get).responseJSON(completionHandler: {response in
+            
+            //TODO: 書き込み整合の確認
+            guard let data = response.data else {
+                return
+            }
+                    
+        })
     }
     
 }
