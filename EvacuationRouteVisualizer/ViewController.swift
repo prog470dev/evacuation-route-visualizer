@@ -63,6 +63,10 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         //自分の登録
         //let center: CLLocationCoordinate2D = CLLocationCoordinate2DMake(myLat, myLon)   //TODO: 自分の現在地を登録
         ApiClient.instance.registEvacuee(id: uuid, coordinate: (myLocationManager.location?.coordinate)!)
+        
+        
+        //ファイル書き込みテスト
+        ApiClient.instance.sendLog()
     }
     
     @objc func onUpdate(timer: Timer){
