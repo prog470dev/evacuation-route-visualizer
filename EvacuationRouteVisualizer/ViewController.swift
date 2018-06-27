@@ -17,7 +17,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     var evacueeSet: Set<String> = []    //同じピンを複数登録しないために設定するが、ハッシュマップだけでやりたい
     var evacueeHash: [String:MKPointAnnotation] = [:]
     
-    let uuid = UIDevice.current.identifierForVendor!.uuidString
+    let uuid = UserDataManager.instance.ownID
     
     var count = 0 //自分の座標登録の回数を制限するため
     
@@ -54,111 +54,98 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         mapView.setRegion(myRegion, animated: true)
         
         //画面の更新
-        Timer.scheduledTimer(timeInterval: 0.2,
+        Timer.scheduledTimer(timeInterval: 0.5,
                              target: self,
                              selector: #selector(ViewController.onUpdate(timer:)),
                              userInfo: nil,
                              repeats: true)
         
         //自分の登録
-        //let center: CLLocationCoordinate2D = CLLocationCoordinate2DMake(myLat, myLon)   //TODO: 自分の現在地を登録
-        ApiClient.instance.registEvacuee(id: uuid, coordinate: (myLocationManager.location?.coordinate)!)
+        //ApiClient.instance.registEvacuee(id: uuid, coordinate: (myLocationManager.location?.coordinate)!)
         
+        //test: ログ・ファイル生成（本番：初期設定完了時に作成）
+        UserDataManager.instance.createLog(fileName: UserDataManager.instance.logFileName)
+        //test: ファイル書き込みテスト (ボタン押下でファイル送信)
+        let myButton = UIButton()
+        let bWidth: CGFloat = 70
+        let bHeight: CGFloat = 30
+        let posX: CGFloat = 0
+        let posY: CGFloat = self.view.frame.height - 70
+        myButton.frame = CGRect(x: posX, y: posY, width: bWidth, height: bHeight)
+        myButton.backgroundColor = UIColor.red
+        myButton.addTarget(self, action: #selector(ViewController.onClickMyButton(sender:)), for: .touchUpInside)
+        self.view.addSubview(myButton)
         
-        //ファイル書き込みテスト
+    }
+    
+    //test: ファイル書き込みテスト
+    @objc func onClickMyButton(sender: UIButton) {
+        print("onClickMyButton!!")
         ApiClient.instance.sendLog()
     }
     
+    
     @objc func onUpdate(timer: Timer){
-        //自分の登録
+        
+        guard UserDataManager.instance.isStart else { return } //初期設定が完了しているときのみ実行
+        
         count += 1
-        if(count % 5 == 0){
-            ApiClient.instance.registEvacuee(id: uuid, coordinate: (myLocationManager.location?.coordinate)!)
+        if(count % 5 == 0){ //ファイルに書き込み (５秒に１回)
             count = 0
+            
+            let now = NSDate()
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy/MM/dd HH:mm:ss"
+            let timeStr = formatter.string(from: now as Date)
+            
+            //TODO: nilになっていた場合に発生するログデータの欠損はどうする？
+            if(myLocationManager.location != nil){
+                let str = timeStr + "," + "\(myLocationManager.location?.coordinate.latitude as! Double)" + "," + "\(myLocationManager.location?.coordinate.longitude as! Double)"
+                
+                let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last?.appendingPathComponent(UserDataManager.instance.logFileName)
+                UserDataManager.instance.appendText(fileURL: path!, string: str)
+            }
+        }
+
+        if(myLocationManager.location != nil){  //一旦バックグラウンドにすると一瞬nilになる
+            //自分の登録
+            ApiClient.instance.registEvacuee(id: uuid, coordinate: (myLocationManager.location?.coordinate)!)
         }
         
-        //for var e in DataCliant.instance.evacuees {
         for var e in ApiClient.instance.evacuees {
-            
-            if (evacueeSet.contains(e.key)) {
+            //実行モードにごとのフィルタリング
+            switch UserDataManager.instance.executionMode {
+            case 1: //自分のみ表示
+                if(e.value.type==1 || (e.value.type==0 && e.value.id != uuid)){
+                    continue
+                }
+            case 2: //自分と他人のみ表示
+                if(e.value.type == 1){
+                    continue
+                }
+            case 3: //すべて表示
+                print("case 3. show all...")
+            default:
+                print("ERROR!!")
+            }
+        
+            if (evacueeSet.contains(e.key)) {   //すでに表示済みなら座標の変更のみ
                 let pin = evacueeHash[e.key]
                 let center: CLLocationCoordinate2D = CLLocationCoordinate2DMake(e.value.latitude, e.value.longitude)
                 pin?.coordinate = center
                 evacueeHash.updateValue(pin!, forKey: e.key)
             }else{
-                let pin: MKPointAnnotation = EvacueeMKPointAnnotation(id: e.value.id)
+                let pin: MKPointAnnotation = EvacueeMKPointAnnotation(id: e.value.id, type: 0)  //0:人, 1:モノ
                 let center: CLLocationCoordinate2D = CLLocationCoordinate2DMake(e.value.latitude, e.value.longitude)
                 pin.coordinate = center
                 pin.title = e.value.id
                 mapView.addAnnotation(pin)
                 evacueeSet.insert(e.key)
                 evacueeHash.updateValue(pin, forKey: e.key)
-                
-                if(e.key == uuid){ //自分はスキップ
-                    continue
-                }
-                
-                //メンバー追加の通知表示
-                let label: UILabel = UILabel(frame: CGRect(x: 0, y: self.view.frame.size.height - 50, width: 200, height: 50))
-                label.backgroundColor = #colorLiteral(red: 0.1764705926, green: 0.4980392158, blue: 0.7568627596, alpha: 1) //UIColor.orange
-                label.layer.masksToBounds = true
-                label.layer.cornerRadius = 20.0
-                label.textColor = UIColor.white
-                label.text = "JOIN: " + e.value.id
-                label.textAlignment = NSTextAlignment.center
-                self.view.addSubview(label)
-                label.alpha = 0.0
-                UIView.animate(withDuration: 0.5, delay: 0.0, options: [.curveEaseIn], animations: {
-                    label.alpha = 1.0
-                }, completion:{ _ in
-                    UIView.animate(withDuration: 0.5, delay: 0.5, options: [.curveEaseIn], animations: {
-                        label.alpha = 0.0
-                    }, completion:{ _ in
-                      label.removeFromSuperview()
-                    })
-                })
-                
             }
         }
         
     }
-
-    
-    // GPSから値を取得した際に呼び出されるメソッド.
-//    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-//
-//        print("didUpdateLocations")
-//
-//        // 配列から現在座標を取得.
-//        let myLocations: NSArray = locations as NSArray
-//        let myLastLocation: CLLocation = myLocations.lastObject as! CLLocation
-//        let myLocation: CLLocationCoordinate2D = myLastLocation.coordinate
-//
-//        print("\(myLocation.latitude), \(myLocation.longitude)")
-//        //現在地表示
-//        let label: UILabel = UILabel(frame: CGRect(x: 0, y: self.view.frame.size.height - 50, width: 200, height: 50))
-//        label.backgroundColor = #colorLiteral(red: 0.1764705926, green: 0.4980392158, blue: 0.7568627596, alpha: 1) //UIColor.orange
-//        label.layer.masksToBounds = true
-//        label.layer.cornerRadius = 20.0
-//        label.textColor = UIColor.white
-//        label.text = "\(myLocation.latitude)" + ", " + "\(myLocation.longitude)"
-//        label.textAlignment = NSTextAlignment.center
-//        self.view.addSubview(label)
-//        label.alpha = 0.0
-//        UIView.animate(withDuration: 0.5, delay: 0.0, options: [.curveEaseIn], animations: {
-//            label.alpha = 1.0
-//        }, completion:{ _ in
-//            UIView.animate(withDuration: 0.5, delay: 0.5, options: [.curveEaseIn], animations: {
-//                label.alpha = 0.0
-//            }, completion:{ _ in
-//                label.removeFromSuperview()
-//            })
-//        })
-//        //
-//
-//        //現在地の登録
-//        ApiClient.instance.registEvacuee(id: uuid, coordinate: myLocation)
-//    }
     
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         print("regionDidChangeAnimated")
@@ -182,7 +169,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     }
     
     
-    
     //ピン画像の変更
     //NOTE: mapView.addAnnotation(pin) のときに呼ばれる => pin: MKPointAnnotation(: MKAnnotation)
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
@@ -192,15 +178,20 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         
         // 画像を選択.
         if let e = annotation as? EvacueeMKPointAnnotation{
-            if(e.id == uuid){  //自分を判定（実際にはUUID）
-                retAnnotation.image = UIImage(named: "annotation")!
-                (annotation as? EvacueeMKPointAnnotation)?.id = e.id    //タップ時のタイトル表示
-                (annotation as? EvacueeMKPointAnnotation)?.title = e.id
-            }else{
-                retAnnotation.image = UIImage(named: "annotation_other")!
-                (annotation as? EvacueeMKPointAnnotation)?.id = e.id
-                (annotation as? EvacueeMKPointAnnotation)?.title = e.id
+            
+            if(e.type == 0){ //人
+                if(e.id == uuid){  //自分を判定
+                    retAnnotation.image = UIImage(named: "annotation")!
+                }else{
+                    retAnnotation.image = UIImage(named: "annotation_other")!
+                }
+            }else{  //モノ
+                retAnnotation.image = UIImage(named: "obstacle")!
             }
+            
+            (annotation as? EvacueeMKPointAnnotation)?.id = e.id    //タップ時のタイトル表示
+            (annotation as? EvacueeMKPointAnnotation)?.title = e.id
+            
             retAnnotation.annotation = annotation
             retAnnotation.canShowCallout = true //タップ時の反応を有効化
         }

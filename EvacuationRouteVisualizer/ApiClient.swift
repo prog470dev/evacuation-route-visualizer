@@ -16,10 +16,13 @@ struct Evacuee {
     var latitude: Double
     var longitude: Double
     
-    init(id: String, latitude: Double, longitude: Double){
+    var type: Int
+    
+    init(id: String, latitude: Double, longitude: Double, type: Int){
         self.id = id
         self.latitude = latitude
         self.longitude = longitude
+        self.type = type
     }
 }
 
@@ -40,13 +43,11 @@ class ApiClient {
     //全ユーザの情報取得
     @objc func getLocations(timer: Timer){
         
-        //let url = "https://goapp1-207110.appspot.com/getUser"
         let url = "https://kandeza81.appspot.com/getUser"
         
         Alamofire.request(url, method: .get).responseJSON(completionHandler: {response in
             
             let statusCode: Int = (response.response?.statusCode)!
-            //print("statusCode(@get): ", statusCode)
             guard statusCode == 200 else { return } //レスポンスが正常でないときは無視 (無視しないと落ちる)
             
             guard let data = response.result.value else {   //[?] ここの処理の必要性は？
@@ -57,7 +58,8 @@ class ApiClient {
             for e in json {
                 var eva = Evacuee(id: e.1["id"].string!,
                                   latitude: e.1["latitude"].double!,
-                                  longitude: e.1["longitude"].double!)
+                                  longitude: e.1["longitude"].double!,
+                                  type: 0)  //TODO: DBのカラムにtype追加 -> JSON返す
                 self.evacuees.updateValue(eva, forKey: e.1["id"].string!)
             }
             
@@ -72,16 +74,15 @@ class ApiClient {
     //自分の現在地登録
     func registEvacuee(id: String, coordinate: CLLocationCoordinate2D){
         
-        //var url = "https://goapp1-207110.appspot.com/setUser?"
         var url = "https://kandeza81.appspot.com/setUser?"
         url += "id=" + id
         url += "&latitude=" + String("\(coordinate.latitude)")
         url += "&longitude=" + String("\(coordinate.longitude)")
+        //url += "&type=" + String("\(UserDataManager.instance.type)")  //アプリのバージョンによるスクリーニングに使用
         
         Alamofire.request(url, method: .get).responseJSON(completionHandler: {response in
             
             let statusCode: Int = (response.response?.statusCode)!
-            //print("statusCode(@set): ", statusCode)
             guard statusCode == 200 else { return } //レスポンスが正常でないときは無視 (無視しないと落ちる)
             
             //TODO: 書き込み整合の確認
@@ -94,13 +95,7 @@ class ApiClient {
     
     //座標ログの送信 (TODO: 起動時[or 実験開始時]にローカルのログは全削除?)
     func sendLog(){
-        let textFileName = "test.csv" //TODO: メモリ上の値からファイル名を生成
-        //createLog(fileName: textFileName)
-        
-        //追記テスト
-        appendText(fileURL: (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent(textFileName))!
-            , string: "DDD,DDD,DDD")
-        
+        let textFileName = UserDataManager.instance.logFileName
         //ファイルアップロード
         let path = FileManager.default.urls(for: .documentDirectory/*.libraryDirectory*/, in: .userDomainMask).first?.appendingPathComponent(textFileName)    //作成したファイルのパス検索
       
@@ -112,7 +107,7 @@ class ApiClient {
                 Alamofire.upload(
                     multipartFormData: { multipartFormData in
                         // パラーメータ指定(ファイルもテキストも行ける?)
-                        multipartFormData.append(data, withName: "file", fileName: "test.csv", mimeType: "text/csv")
+                        multipartFormData.append(data, withName: "file", fileName: textFileName, mimeType: "text/csv")
                         //multipartFormData.append(sendSTR.data(using: String.Encoding.utf8)!, withName: "userId")
                 },
                     to: url,
@@ -135,47 +130,6 @@ class ApiClient {
             }
         }else{
             print("NOT FOUND!!")
-        }
-    }
-    
-    // テキストを追記するメソッド
-    func appendText(fileURL: URL, string: String) {
-        
-        do {
-            let fileHandle = try FileHandle(forWritingTo: fileURL)
-            
-            // 改行を入れる
-            let stringToWrite = "\n" + string
-            
-            // ファイルの最後に追記
-            fileHandle.seekToEndOfFile()
-            fileHandle.write(stringToWrite.data(using: String.Encoding.utf8)!)
-            
-        } catch let error as NSError {
-            print("failed to append: \(error)")
-        }
-    }
-    
-    //ログ・ファイル生成 (起動に/実験開始時にコール)
-    func createLog(fileName: String){
-        //ファイル生成(とりあえずここで作る)
-        // 作成するテキストファイルの名前
-        let textFileName = fileName
-        let initialText = "AAA,BBB,CCC\nAAA,BBB,CCC\nAAA,BBB,CCC"
-        
-        // DocumentディレクトリのfileURLを取得
-        if let documentDirectoryFileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last {
-            
-            // ディレクトリのパスにファイル名をつなげてファイルのフルパスを作る
-            let targetTextFilePath = documentDirectoryFileURL.appendingPathComponent(textFileName)
-            
-            print("書き込むファイルのパス: \(targetTextFilePath)")
-            
-            do {
-                try initialText.write(to: targetTextFilePath, atomically: true, encoding: String.Encoding.utf8)
-            } catch let error as NSError {
-                print("failed to write: \(error)")
-            }
         }
     }
     

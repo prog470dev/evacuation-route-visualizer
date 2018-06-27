@@ -34,7 +34,7 @@ class DataCliant {
                 evacueeSet.insert(e.id)
             }
 
-            evacuees.updateValue(Evacuee(id: e.id, latitude: CLLocationDegrees(e.latitude)!, longitude: CLLocationDegrees(e.longitude)!), forKey: e.id)
+            evacuees.updateValue(Evacuee(id: e.id, latitude: CLLocationDegrees(e.latitude)!, longitude: CLLocationDegrees(e.longitude)!, type: 0/**/), forKey: e.id)
         }
         
     }

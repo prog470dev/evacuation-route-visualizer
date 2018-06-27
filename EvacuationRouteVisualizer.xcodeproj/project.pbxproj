@@ -13,11 +13,10 @@
 		D64925C020AF02C100AC6669 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64925BF20AF02C100AC6669 /* ViewController.swift */; };
 		D64925C520AF02C100AC6669 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D64925C420AF02C100AC6669 /* Assets.xcassets */; };
 		D64925C820AF02C100AC6669 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D64925C620AF02C100AC6669 /* LaunchScreen.storyboard */; };
-		D64925D020AF1B5300AC6669 /* Evacuee.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64925CF20AF1B5300AC6669 /* Evacuee.swift */; };
 		D64925D220AF1BE400AC6669 /* DataCliant.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64925D120AF1BE400AC6669 /* DataCliant.swift */; };
 		D64925D420AF2B3A00AC6669 /* DBStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64925D320AF2B3A00AC6669 /* DBStub.swift */; };
 		D6C4AD6520B02CC800647F5B /* EvacueeMKPointAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C4AD6420B02CC800647F5B /* EvacueeMKPointAnnotation.swift */; };
-		D6C4AD6720B0398200647F5B /* IndividualData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C4AD6620B0398200647F5B /* IndividualData.swift */; };
+		D6EF2D0820E37FC500D1B60A /* UserDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EF2D0720E37FC500D1B60A /* UserDataManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,11 +30,10 @@
 		D64925C420AF02C100AC6669 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D64925C720AF02C100AC6669 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D64925C920AF02C100AC6669 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D64925CF20AF1B5300AC6669 /* Evacuee.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Evacuee.swift; sourceTree = "<group>"; };
 		D64925D120AF1BE400AC6669 /* DataCliant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataCliant.swift; sourceTree = "<group>"; };
 		D64925D320AF2B3A00AC6669 /* DBStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBStub.swift; sourceTree = "<group>"; };
 		D6C4AD6420B02CC800647F5B /* EvacueeMKPointAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvacueeMKPointAnnotation.swift; sourceTree = "<group>"; };
-		D6C4AD6620B0398200647F5B /* IndividualData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndividualData.swift; sourceTree = "<group>"; };
+		D6EF2D0720E37FC500D1B60A /* UserDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataManager.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,9 +96,8 @@
 			isa = PBXGroup;
 			children = (
 				D64925BD20AF02C100AC6669 /* AppDelegate.swift */,
+				D6EF2D0720E37FC500D1B60A /* UserDataManager.swift */,
 				D626464020D95D7E00F96B0F /* ApiClient.swift */,
-				D6C4AD6620B0398200647F5B /* IndividualData.swift */,
-				D64925CF20AF1B5300AC6669 /* Evacuee.swift */,
 				D6C4AD6420B02CC800647F5B /* EvacueeMKPointAnnotation.swift */,
 				D64925BF20AF02C100AC6669 /* ViewController.swift */,
 				D64925C420AF02C100AC6669 /* Assets.xcassets */,
@@ -243,9 +240,8 @@
 			files = (
 				D6C4AD6520B02CC800647F5B /* EvacueeMKPointAnnotation.swift in Sources */,
 				D64925D220AF1BE400AC6669 /* DataCliant.swift in Sources */,
-				D64925D020AF1B5300AC6669 /* Evacuee.swift in Sources */,
+				D6EF2D0820E37FC500D1B60A /* UserDataManager.swift in Sources */,
 				D626464120D95D7E00F96B0F /* ApiClient.swift in Sources */,
-				D6C4AD6720B0398200647F5B /* IndividualData.swift in Sources */,
 				D64925C020AF02C100AC6669 /* ViewController.swift in Sources */,
 				D64925BE20AF02C100AC6669 /* AppDelegate.swift in Sources */,
 				D64925D420AF2B3A00AC6669 /* DBStub.swift in Sources */,
