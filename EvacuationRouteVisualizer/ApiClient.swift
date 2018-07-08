@@ -32,6 +32,8 @@ class ApiClient {
     var evacueeSet: Set<String> = Set<String>() //これいる？（ハッシュマップevacueeで存在判定はできそう）
     var evacuees: [String:Evacuee] = [:]
     
+    let dmain = "kandeza81.appspot.com"
+    
     private init(){
         Timer.scheduledTimer(timeInterval: 1.0,
                              target: self,
@@ -43,7 +45,7 @@ class ApiClient {
     //全ユーザの情報取得
     @objc func getLocations(timer: Timer){
         
-        let url = "https://kandeza81.appspot.com/getUser"
+        let url = "https://" + dmain + "/getUser"
         
         Alamofire.request(url, method: .get).responseJSON(completionHandler: {response in
             
@@ -59,7 +61,7 @@ class ApiClient {
                 var eva = Evacuee(id: e.1["id"].string!,
                                   latitude: e.1["latitude"].double!,
                                   longitude: e.1["longitude"].double!,
-                                  type: 0)  //TODO: DBのカラムにtype追加 -> JSON返す
+                                  type: e.1["type"].int!)
                 self.evacuees.updateValue(eva, forKey: e.1["id"].string!)
             }
             
@@ -74,11 +76,11 @@ class ApiClient {
     //自分の現在地登録
     func registEvacuee(id: String, coordinate: CLLocationCoordinate2D){
         
-        var url = "https://kandeza81.appspot.com/setUser?"
+        var url = "https://" + dmain + "/setUser?"
         url += "id=" + id
         url += "&latitude=" + String("\(coordinate.latitude)")
         url += "&longitude=" + String("\(coordinate.longitude)")
-        //url += "&type=" + String("\(UserDataManager.instance.type)")  //アプリのバージョンによるスクリーニングに使用
+        url += "&type=" + String("\(UserDataManager.instance.type)")  //アプリのバージョンによるスクリーニングに使用
         
         Alamofire.request(url, method: .get).responseJSON(completionHandler: {response in
             
@@ -95,20 +97,19 @@ class ApiClient {
     
     //座標ログの送信 (TODO: 起動時[or 実験開始時]にローカルのログは全削除?)
     func sendLog(){
-        let textFileName = UserDataManager.instance.logFileName
+        let textFileName = UserDataManager.instance.getLogFileName()
         //ファイルアップロード
         let path = FileManager.default.urls(for: .documentDirectory/*.libraryDirectory*/, in: .userDomainMask).first?.appendingPathComponent(textFileName)    //作成したファイルのパス検索
       
         if(FileManager.default.fileExists(atPath: (path?.path)!)) { //ファイルの存在を確認
             do {
                 let data = try Data(contentsOf: path!)
-                let url = "https://kandeza81.appspot.com/upload"
+                let url = "https://" + dmain + "/upload"
                 
                 Alamofire.upload(
                     multipartFormData: { multipartFormData in
                         // パラーメータ指定(ファイルもテキストも行ける?)
                         multipartFormData.append(data, withName: "file", fileName: textFileName, mimeType: "text/csv")
-                        //multipartFormData.append(sendSTR.data(using: String.Encoding.utf8)!, withName: "userId")
                 },
                     to: url,
                     encodingCompletion: { encodingResult in

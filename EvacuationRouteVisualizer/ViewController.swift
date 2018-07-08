@@ -21,6 +21,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
     var count = 0 //自分の座標登録の回数を制限するため
     
+    let myButton = UIButton()   //ログ送信用ボタン
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -54,34 +56,50 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         mapView.setRegion(myRegion, animated: true)
         
         //画面の更新
-        Timer.scheduledTimer(timeInterval: 0.5,
+        Timer.scheduledTimer(timeInterval: 1.0,
                              target: self,
                              selector: #selector(ViewController.onUpdate(timer:)),
                              userInfo: nil,
                              repeats: true)
-        
-        //自分の登録
-        //ApiClient.instance.registEvacuee(id: uuid, coordinate: (myLocationManager.location?.coordinate)!)
-        
-        //test: ログ・ファイル生成（本番：初期設定完了時に作成）
-        UserDataManager.instance.createLog(fileName: UserDataManager.instance.logFileName)
-        //test: ファイル書き込みテスト (ボタン押下でファイル送信)
-        let myButton = UIButton()
-        let bWidth: CGFloat = 70
-        let bHeight: CGFloat = 30
+
+        //ログ送信ボタン出現のための隠しコマンド
+        let longTap = UILongPressGestureRecognizer(target: self, action: #selector(ViewController.longTapGesture(sender:)))
+        longTap.minimumPressDuration = 5.0
+        self.view.addGestureRecognizer(longTap)
+
+        //ログ送信ボタンの設定
+        let bWidth: CGFloat = 100
+        let bHeight: CGFloat = 100
         let posX: CGFloat = 0
-        let posY: CGFloat = self.view.frame.height - 70
+        let posY: CGFloat = self.view.frame.height - 100
         myButton.frame = CGRect(x: posX, y: posY, width: bWidth, height: bHeight)
-        myButton.backgroundColor = UIColor.red
+        myButton.backgroundColor = UIColor.gray
+        myButton.setTitle("Send Log", for: .normal)
         myButton.addTarget(self, action: #selector(ViewController.onClickMyButton(sender:)), for: .touchUpInside)
-        self.view.addSubview(myButton)
+        
+        
+        /* 避難所の表示 */
+        let shelterPin: MKPointAnnotation = EvacueeMKPointAnnotation(id: "0", type: 2)  //0:人, 1:モノ, 3: 避難所
+        let shelterLat: CLLocationDegrees = 36.545413
+        let shelterLon: CLLocationDegrees = 136.705706
+        let center: CLLocationCoordinate2D = CLLocationCoordinate2DMake(shelterLat, shelterLon)
+        shelterPin.coordinate = center
+        shelterPin.title = "避難所"
+        shelterPin.subtitle = "ゴール"
+        mapView.addAnnotation(shelterPin)   //避難所もハッシュに入れないと表示されない
+        evacueeSet.insert("0")
+        evacueeHash.updateValue(shelterPin, forKey: "0")
         
     }
     
-    //test: ファイル書き込みテスト
+    @objc func longTapGesture(sender: UISwipeGestureRecognizer){
+        self.view.addSubview(myButton)
+    }
+    
     @objc func onClickMyButton(sender: UIButton) {
-        print("onClickMyButton!!")
+        print("send log.")
         ApiClient.instance.sendLog()
+        sender.removeFromSuperview()
     }
     
     
@@ -102,7 +120,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             if(myLocationManager.location != nil){
                 let str = timeStr + "," + "\(myLocationManager.location?.coordinate.latitude as! Double)" + "," + "\(myLocationManager.location?.coordinate.longitude as! Double)"
                 
-                let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last?.appendingPathComponent(UserDataManager.instance.logFileName)
+//                let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last?.appendingPathComponent(UserDataManager.instance.logFileName)
+                let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last?.appendingPathComponent(UserDataManager.instance.getLogFileName())
                 UserDataManager.instance.appendText(fileURL: path!, string: str)
             }
         }
@@ -114,7 +133,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         
         for var e in ApiClient.instance.evacuees {
             //実行モードにごとのフィルタリング
-            switch UserDataManager.instance.executionMode {
+            //switch UserDataManager.instance.executionMode {
+            switch UserDataManager.instance.group {
             case 1: //自分のみ表示
                 if(e.value.type==1 || (e.value.type==0 && e.value.id != uuid)){
                     continue
@@ -135,7 +155,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                 pin?.coordinate = center
                 evacueeHash.updateValue(pin!, forKey: e.key)
             }else{
-                let pin: MKPointAnnotation = EvacueeMKPointAnnotation(id: e.value.id, type: 0)  //0:人, 1:モノ
+                let pin: MKPointAnnotation = EvacueeMKPointAnnotation(id: e.value.id, type: e.value.type)  //0:人, 1:モノ
                 let center: CLLocationCoordinate2D = CLLocationCoordinate2DMake(e.value.latitude, e.value.longitude)
                 pin.coordinate = center
                 pin.title = e.value.id
@@ -185,8 +205,10 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                 }else{
                     retAnnotation.image = UIImage(named: "annotation_other")!
                 }
-            }else{  //モノ
+            }else if(e.type == 1) {  //モノ
                 retAnnotation.image = UIImage(named: "obstacle")!
+            }else{  //ゴール
+                retAnnotation.image = UIImage(named: "shelter")!
             }
             
             (annotation as? EvacueeMKPointAnnotation)?.id = e.id    //タップ時のタイトル表示

@@ -43,7 +43,6 @@ class DataCliant {
         return CLLocationCoordinate2DMake((evacuees[id]?.latitude)!, (evacuees[id]?.longitude)!)
     }
     
-    //NOTE: 呼び出すときはUUIDを引数に与える
     func registEvacuee(id: String, coordinate: CLLocationCoordinate2D){
         //TODO: 登録済みかどうかの確認
         var alreadyRegist = DBStub.instance.findID(id: id)
