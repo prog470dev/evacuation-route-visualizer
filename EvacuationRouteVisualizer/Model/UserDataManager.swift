@@ -44,7 +44,8 @@ class UserDataManager {
     
     static let instance = UserDataManager()
     
-    let ownID = UIDevice.current.identifierForVendor!.uuidString //この識別子を使用して自分を判断する（ex. マップ上のピンの色を変えるとか）
+    /* 自分の識別子 */
+    let ownID = UIDevice.current.identifierForVendor!.uuidString
     
     var isStart = false //実験の実行状態
     
@@ -55,17 +56,16 @@ class UserDataManager {
     
     private init(){}
     
-    //ログ・ファイル生成
+    /* ログ・ファイル生成 */
     func createLog(fileName: String){
-        // 作成するテキストファイルの名前
+
         let textFileName = getLogFileName()
         let initialText = "time,latitude,longitude"
         
-        // DocumentディレクトリのfileURLを取得
+        // DocumentディレクトリのfileURL
         if let documentDirectoryFileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last {
-            // ディレクトリのパスにファイル名をつなげてファイルのフルパスを作る
+            // ディレクトリのパスにファイル名をつなげてファイルのフルパス作成
             let targetTextFilePath = documentDirectoryFileURL.appendingPathComponent(textFileName)
-            
             do {
                 try initialText.write(to: targetTextFilePath, atomically: true, encoding: String.Encoding.utf8)
             } catch let error as NSError {
@@ -74,27 +74,22 @@ class UserDataManager {
         }
     }
     
-    // テキストを追記するメソッド
+    /* ログ・ファイル追記 */
     func appendText(fileURL: URL, string: String) {
         
         do {
             let fileHandle = try FileHandle(forWritingTo: fileURL)
-            // 改行を入れる
             let stringToWrite = "\n" + string
             // ファイルの最後に追記
             fileHandle.seekToEndOfFile()
             fileHandle.write(stringToWrite.data(using: String.Encoding.utf8)!)
-            
         } catch let error as NSError {
             print("failed to append: \(error)")
         }
     }
 
     func getLogFileName() -> String{
-        var logFileName = ""
-        
-        logFileName += ownID + "_" + String(type) + "_" + String(group) + "_" + String(age) + "_" + String(sex) + ".csv"
-        
+        let logFileName = ownID + "_" + String(type) + "_" + String(group) + "_" + String(age) + "_" + String(sex) + ".csv"
         return logFileName
     }
 }

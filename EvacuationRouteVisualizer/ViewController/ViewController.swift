@@ -19,9 +19,9 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
     let uuid = UserDataManager.instance.ownID
     
-    var count = 0 //自分の座標登録の回数を制限するため
+    var count = 0 //ログ書き込み頻度の制限
     
-    let myButton = UIButton()   //ログ送信用ボタン
+    let logButton = UIButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,7 +56,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         mapView.setRegion(myRegion, animated: true)
         
         //画面の更新
-        Timer.scheduledTimer(timeInterval: 1.0,
+        Timer.scheduledTimer(timeInterval: 0.5,
                              target: self,
                              selector: #selector(ViewController.onUpdate(timer:)),
                              userInfo: nil,
@@ -72,14 +72,13 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         let bHeight: CGFloat = 100
         let posX: CGFloat = 0
         let posY: CGFloat = self.view.frame.height - 100
-        myButton.frame = CGRect(x: posX, y: posY, width: bWidth, height: bHeight)
-        myButton.backgroundColor = UIColor.gray
-        myButton.setTitle("Send Log", for: .normal)
-        myButton.addTarget(self, action: #selector(ViewController.onClickMyButton(sender:)), for: .touchUpInside)
-        
+        logButton.frame = CGRect(x: posX, y: posY, width: bWidth, height: bHeight)
+        logButton.backgroundColor = UIColor.gray
+        logButton.setTitle("Send Log", for: .normal)
+        logButton.addTarget(self, action: #selector(ViewController.onClickLogButton(sender:)), for: .touchUpInside)
         
         /* 避難所の表示 */
-        let shelterPin: MKPointAnnotation = EvacueeMKPointAnnotation(id: "0", type: 2)  //0:人, 1:モノ, 3: 避難所
+        let shelterPin: MKPointAnnotation = EvacueeMKPointAnnotation(id: "0", type: 2)  //0:人, 1:モノ, 2: 避難所
         let shelterLat: CLLocationDegrees = 36.545413
         let shelterLon: CLLocationDegrees = 136.705706
         let center: CLLocationCoordinate2D = CLLocationCoordinate2DMake(shelterLat, shelterLon)
@@ -93,10 +92,10 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     }
     
     @objc func longTapGesture(sender: UISwipeGestureRecognizer){
-        self.view.addSubview(myButton)
+        self.view.addSubview(logButton)
     }
     
-    @objc func onClickMyButton(sender: UIButton) {
+    @objc func onClickLogButton(sender: UIButton) {
         print("send log.")
         ApiClient.instance.sendLog()
         sender.removeFromSuperview()
@@ -108,7 +107,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         guard UserDataManager.instance.isStart else { return } //初期設定が完了しているときのみ実行
         
         count += 1
-        if(count % 5 == 0){ //ファイルに書き込み (５秒に１回)
+        if(count % 10 == 0){ //ファイルに書き込み (５秒に１回)
             count = 0
             
             let now = NSDate()
@@ -120,7 +119,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             if(myLocationManager.location != nil){
                 let str = timeStr + "," + "\(myLocationManager.location?.coordinate.latitude as! Double)" + "," + "\(myLocationManager.location?.coordinate.longitude as! Double)"
                 
-//                let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last?.appendingPathComponent(UserDataManager.instance.logFileName)
                 let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last?.appendingPathComponent(UserDataManager.instance.getLogFileName())
                 UserDataManager.instance.appendText(fileURL: path!, string: str)
             }
@@ -133,7 +131,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         
         for var e in ApiClient.instance.evacuees {
             //実行モードにごとのフィルタリング
-            //switch UserDataManager.instance.executionMode {
             switch UserDataManager.instance.group {
             case 1: //自分のみ表示
                 if(e.value.type==1 || (e.value.type==0 && e.value.id != uuid)){
@@ -189,16 +186,14 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     }
     
     
-    //ピン画像の変更
-    //NOTE: mapView.addAnnotation(pin) のときに呼ばれる => pin: MKPointAnnotation(: MKAnnotation)
+    /* ピン画像の変更 */
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        //NOTE: mapView.addAnnotation(pin) のときに呼ばれる => pin: MKPointAnnotation(: MKAnnotation)
         
         var retAnnotation = MKAnnotationView()
         retAnnotation.annotation = annotation
         
-        // 画像を選択.
         if let e = annotation as? EvacueeMKPointAnnotation{
-            
             if(e.type == 0){ //人
                 if(e.id == uuid){  //自分を判定
                     retAnnotation.image = UIImage(named: "annotation")!

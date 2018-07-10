@@ -14,6 +14,6 @@ class EvacueeMKPointAnnotation: MKPointAnnotation {
     
     init(id: String, type: Int){
         self.id = id
-        self.type = type    //0:人, 1:モノ
+        self.type = type    //0:人, 1:モノ, 2: 避難所
     }
 }

@@ -35,7 +35,7 @@
 		D64925D320AF2B3A00AC6669 /* DBStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBStub.swift; sourceTree = "<group>"; };
 		D687FCBA20F0ABB500CA5711 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		D6C4AD6420B02CC800647F5B /* EvacueeMKPointAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvacueeMKPointAnnotation.swift; sourceTree = "<group>"; };
-		D6EF2D0720E37FC500D1B60A /* UserDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataManager.swift; sourceTree = SOURCE_ROOT; };
+		D6EF2D0720E37FC500D1B60A /* UserDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UserDataManager.swift; path = EvacuationRouteVisualizer/Model/UserDataManager.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,18 +97,34 @@
 		D64925BC20AF02C100AC6669 /* EvacuationRouteVisualizer */ = {
 			isa = PBXGroup;
 			children = (
+				D6B0C5D120F4593F0071BA11 /* Model */,
+				D6B0C5D020F459110071BA11 /* ViewController */,
 				D64925BD20AF02C100AC6669 /* AppDelegate.swift */,
-				D6EF2D0720E37FC500D1B60A /* UserDataManager.swift */,
-				D626464020D95D7E00F96B0F /* ApiClient.swift */,
-				D6C4AD6420B02CC800647F5B /* EvacueeMKPointAnnotation.swift */,
-				D64925BF20AF02C100AC6669 /* ViewController.swift */,
-				D687FCBA20F0ABB500CA5711 /* SettingViewController.swift */,
 				D64925C420AF02C100AC6669 /* Assets.xcassets */,
 				D64925C620AF02C100AC6669 /* LaunchScreen.storyboard */,
 				D64925C920AF02C100AC6669 /* Info.plist */,
 				D626464220D961EC00F96B0F /* Test */,
 			);
 			path = EvacuationRouteVisualizer;
+			sourceTree = "<group>";
+		};
+		D6B0C5D020F459110071BA11 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				D687FCBA20F0ABB500CA5711 /* SettingViewController.swift */,
+				D64925BF20AF02C100AC6669 /* ViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		D6B0C5D120F4593F0071BA11 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				D6C4AD6420B02CC800647F5B /* EvacueeMKPointAnnotation.swift */,
+				D6EF2D0720E37FC500D1B60A /* UserDataManager.swift */,
+				D626464020D95D7E00F96B0F /* ApiClient.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

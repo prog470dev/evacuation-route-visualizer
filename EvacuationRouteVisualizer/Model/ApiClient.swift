@@ -29,10 +29,10 @@ struct Evacuee {
 class ApiClient {
     static let instance = ApiClient()
     
+    let dmain = "kandeza81.appspot.com"
+    
     var evacueeSet: Set<String> = Set<String>() //これいる？（ハッシュマップevacueeで存在判定はできそう）
     var evacuees: [String:Evacuee] = [:]
-    
-    let dmain = "kandeza81.appspot.com"
     
     private init(){
         Timer.scheduledTimer(timeInterval: 1.0,
@@ -42,7 +42,7 @@ class ApiClient {
                              repeats: true)
     }
     
-    //全ユーザの情報取得
+    /* 全ユーザの情報取得 */
     @objc func getLocations(timer: Timer){
         
         let url = "https://" + dmain + "/getUser"
@@ -66,14 +66,13 @@ class ApiClient {
             }
             
         })
-        
     }
     
     func getCoordinate(id: String) -> CLLocationCoordinate2D{
         return CLLocationCoordinate2DMake((evacuees[id]?.latitude)!, (evacuees[id]?.longitude)!)
     }
     
-    //自分の現在地登録
+    /* 自分の現在地登録 */
     func registEvacuee(id: String, coordinate: CLLocationCoordinate2D){
         
         var url = "https://" + dmain + "/setUser?"
@@ -95,7 +94,7 @@ class ApiClient {
         })
     }
     
-    //座標ログの送信 (TODO: 起動時[or 実験開始時]にローカルのログは全削除?)
+    /* 座標ログの送信 */
     func sendLog(){
         let textFileName = UserDataManager.instance.getLogFileName()
         //ファイルアップロード

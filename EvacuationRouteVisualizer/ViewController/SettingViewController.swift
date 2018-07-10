@@ -32,9 +32,10 @@ class SettingViewController: UIViewController {
 
     /* ボタンの表示テキスト */
     var typeTexts: [String] = ["人", "物"]
-    var groupTexts: [String] = ["1", "2", "3"]
-    var ageTexts: [String] = ["10代", "20代", "30代", "40代"]
+    var groupTexts: [String] = ["1:自", "2:自他", "3:自他物"]
+    var ageTexts: [String] = ["~20代", "~40代", "~60代", "70代~"]
     var sexTexts: [String] = ["男", "女"]
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -86,6 +87,7 @@ class SettingViewController: UIViewController {
                 typeButtons[i].heightAnchor.constraint(equalTo: typeButtons[i-1].heightAnchor).isActive = true
             }
         }
+        let _ = createTitle(text: "タイプ", parentView: typeButtons[0])
         
         /* GROUP */
         for i in 0..<groupValues.count {
@@ -93,6 +95,7 @@ class SettingViewController: UIViewController {
             groupButtons[i].backgroundColor = .orange
             groupButtons[i].translatesAutoresizingMaskIntoConstraints = false
             groupButtons[i].setTitle(groupTexts[i], for: .normal)
+            groupButtons[i].titleLabel?.font = UIFont.systemFont(ofSize: 15)    //このボタンだけ文字数が多いため
             parentView.addSubview(groupButtons[i])
             
             groupButtons[i].addTarget(self, action: #selector(SettingViewController.onClickButton(sender:)), for: .touchUpInside)
@@ -110,6 +113,7 @@ class SettingViewController: UIViewController {
                 groupButtons[i].heightAnchor.constraint(equalTo: typeButtons[i-1].heightAnchor).isActive = true
             }
         }
+        let _ = createTitle(text: "グループ", parentView: groupButtons[0])
         
         /* AGE */
         for i in 0..<ageValues.count {
@@ -134,6 +138,7 @@ class SettingViewController: UIViewController {
                 ageButtons[i].heightAnchor.constraint(equalTo: groupButtons[i-1].heightAnchor).isActive = true
             }
         }
+        let _ = createTitle(text: "年代", parentView: ageButtons[0])
         
         /* SEX */
         for i in 0..<sexValues.count {
@@ -158,6 +163,7 @@ class SettingViewController: UIViewController {
                 sexButtons[i].heightAnchor.constraint(equalTo: ageButtons[i-1].heightAnchor).isActive = true
             }
         }
+        let _ = createTitle(text: "年代", parentView: sexButtons[0])
         
         //OKボタン
         okButton = SettingUIButton(frame: CGRect(), category: ButtonCategory.OK, data: 1)
@@ -170,6 +176,27 @@ class SettingViewController: UIViewController {
         okButton.topAnchor.constraint(equalTo: sexButtons[sexButtons.count-1].bottomAnchor, constant: 50.0).isActive = true  //上端
         okButton.widthAnchor.constraint(equalTo: parentView.widthAnchor, multiplier: 0.20).isActive = true    //幅
         okButton.heightAnchor.constraint(equalToConstant: 40.0).isActive = true   //高さ
+    }
+    
+    func createTitle(text: String, parentView: UIView) -> UILabel {
+        let label: UILabel = UILabel(frame: CGRect())
+        
+        label.textColor = UIColor.black
+        label.text = text
+        label.font = UIFont.systemFont(ofSize: 15)
+        label.textAlignment = NSTextAlignment.left
+        
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        parentView.superview?.addSubview(label)
+        
+        label.leadingAnchor.constraint(equalTo: parentView.leadingAnchor).isActive = true  //左端
+        label.bottomAnchor.constraint(equalTo: parentView.topAnchor, constant: -5.0).isActive = true  //上端
+        //label.widthAnchor.constraint(equalTo: parentView.widthAnchor, multiplier: 0.5).isActive = true    //幅
+        label.widthAnchor.constraint(equalToConstant: 150.0).isActive = true
+        label.heightAnchor.constraint(equalToConstant: 20.0).isActive = true   //高さ
+        
+        return label
     }
     
     @objc func onClickButton(sender: SettingUIButton){
