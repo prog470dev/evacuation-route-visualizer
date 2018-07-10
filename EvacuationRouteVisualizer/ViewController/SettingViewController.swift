@@ -27,13 +27,13 @@ class SettingViewController: UIViewController {
     /* 押下で設定されるボタンの値 */
     var typeValues: [TypeValue] = [.HUMAN, .OBJECT]
     var groupValues: [GroupValue] = [.ONE, .TWO, .THREE]
-    var ageValues: [AgeValue] = [.GENERATION_10, .GENERATION_20, .GENERATION_30, .GENERATION_40] //, .GENERATION_50, .GENERATION_60, .GENERATION_70, .GENERATION_80]
+    var ageValues: [AgeValue] = [.GENERATION_10, .GENERATION_20, .GENERATION_30, .GENERATION_40, .GENERATION_50, .GENERATION_60, .GENERATION_70, .GENERATION_80]
     var sexValues: [SexValue] = [.MALE, .FEMALE]
 
     /* ボタンの表示テキスト */
     var typeTexts: [String] = ["人", "物"]
     var groupTexts: [String] = ["1:自", "2:自他", "3:自他物"]
-    var ageTexts: [String] = ["~20代", "~40代", "~60代", "70代~"]
+    var ageTexts: [String] = ["10代", "20代", "30代", "40代", "50代", "60代", "70代", "80代~"]
     var sexTexts: [String] = ["男", "女"]
     
     
@@ -131,11 +131,21 @@ class SettingViewController: UIViewController {
                 ageButtons[i].topAnchor.constraint(equalTo: groupButtons[groupButtons.count-1].bottomAnchor, constant: 50.0).isActive = true  //上端
                 ageButtons[i].widthAnchor.constraint(equalTo: parentView.widthAnchor, multiplier: 0.20).isActive = true    //幅
                 ageButtons[i].heightAnchor.constraint(equalToConstant: 40.0).isActive = true   //高さ
-            }else{
+            } else if i == 4 {
+                ageButtons[i].leadingAnchor.constraint(equalTo: parentView.leadingAnchor, constant: 10.0).isActive = true
+                ageButtons[i].topAnchor.constraint(equalTo: ageButtons[0].bottomAnchor, constant: 5.0).isActive = true
+                ageButtons[i].widthAnchor.constraint(equalTo: parentView.widthAnchor, multiplier: 0.20).isActive = true
+                ageButtons[i].heightAnchor.constraint(equalToConstant: 40.0).isActive = true
+            }else if i < 4{    //１段目
                 ageButtons[i].leadingAnchor.constraint(equalTo: ageButtons[i-1].trailingAnchor, constant: 10.0).isActive = true
                 ageButtons[i].topAnchor.constraint(equalTo: ageButtons[i-1].topAnchor).isActive = true
                 ageButtons[i].widthAnchor.constraint(equalTo: ageButtons[i-1].widthAnchor).isActive = true
                 ageButtons[i].heightAnchor.constraint(equalTo: groupButtons[i-1].heightAnchor).isActive = true
+            } else {    //２段目
+                ageButtons[i].leadingAnchor.constraint(equalTo: ageButtons[i-1].trailingAnchor, constant: 10.0).isActive = true
+                ageButtons[i].topAnchor.constraint(equalTo: ageButtons[i-1].topAnchor).isActive = true
+                ageButtons[i].widthAnchor.constraint(equalTo: parentView.widthAnchor, multiplier: 0.20).isActive = true
+                ageButtons[i].heightAnchor.constraint(equalToConstant: 40.0).isActive = true
             }
         }
         let _ = createTitle(text: "年代", parentView: ageButtons[0])
