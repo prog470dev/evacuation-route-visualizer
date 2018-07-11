@@ -62,9 +62,10 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                              userInfo: nil,
                              repeats: true)
 
-        //ログ送信ボタン出現のための隠しコマンド
-        let longTap = UILongPressGestureRecognizer(target: self, action: #selector(ViewController.longTapGesture(sender:)))
-        longTap.minimumPressDuration = 5.0
+        //ログ送信ボタン出現のための隠しコマンド (２本指で連続１０回タップ)
+        let longTap = UITapGestureRecognizer(target: self, action: #selector(ViewController.longTapGesture(sender:)))
+        longTap.numberOfTouchesRequired = 2
+        longTap.numberOfTapsRequired = 10
         self.view.addGestureRecognizer(longTap)
 
         //ログ送信ボタンの設定
@@ -140,8 +141,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                 if(e.value.type == 1){
                     continue
                 }
-            case 3: //すべて表示
-                print("case 3. show all...")
+            case 3: break //すべて表示
+                //print("case 3. show all...")
             default:
                 print("ERROR!!")
             }

@@ -49,8 +49,16 @@ class ApiClient {
         
         Alamofire.request(url, method: .get).responseJSON(completionHandler: {response in
             
+            //レスポンスが正常でないときは無視 (無視しないと落ちる)
+            guard response.response != nil else {
+                print("response.response", response.response)
+                return
+            }
             let statusCode: Int = (response.response?.statusCode)!
-            guard statusCode == 200 else { return } //レスポンスが正常でないときは無視 (無視しないと落ちる)
+            guard statusCode == 200 else {
+                print("statusCode(@get)", statusCode)
+                return
+            }
             
             guard let data = response.result.value else {   //[?] ここの処理の必要性は？
                 return
@@ -83,8 +91,16 @@ class ApiClient {
         
         Alamofire.request(url, method: .get).responseJSON(completionHandler: {response in
             
+            //レスポンスが正常でないときは無視 (無視しないと落ちる)
+            guard response.response != nil else {
+                print("response.response", response.response)
+                return
+            }
             let statusCode: Int = (response.response?.statusCode)!
-            guard statusCode == 200 else { return } //レスポンスが正常でないときは無視 (無視しないと落ちる)
+            guard statusCode == 200 else {
+                print("statusCode(@regist)", statusCode)
+                return
+            }
             
             //TODO: 書き込み整合の確認
             guard let data = response.data else {
