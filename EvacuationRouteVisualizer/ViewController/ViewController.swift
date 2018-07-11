@@ -17,6 +17,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     var evacueeSet: Set<String> = []    //同じピンを複数登録しないために設定するが、ハッシュマップだけでやりたい
     var evacueeHash: [String:MKPointAnnotation] = [:]
     
+    var preType: [String:Int] = [:] //一つ前の画像を記憶 (登録済みtypeが変更されたときの対処のため)
+    
     let uuid = UserDataManager.instance.ownID
     
     var count = 0 //ログ書き込み頻度の制限
@@ -90,6 +92,10 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         evacueeSet.insert("0")
         evacueeHash.updateValue(shelterPin, forKey: "0")
         
+        /* 自分の登録 */
+        if(myLocationManager.location != nil){
+            ApiClient.instance.registEvacuee(id: uuid, coordinate: (myLocationManager.location?.coordinate)!)
+        }
     }
     
     @objc func longTapGesture(sender: UISwipeGestureRecognizer){
@@ -147,20 +153,40 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                 print("ERROR!!")
             }
         
-            if (evacueeSet.contains(e.key)) {   //すでに表示済みなら座標の変更のみ
-                let pin = evacueeHash[e.key]
-                let center: CLLocationCoordinate2D = CLLocationCoordinate2DMake(e.value.latitude, e.value.longitude)
-                pin?.coordinate = center
-                evacueeHash.updateValue(pin!, forKey: e.key)
+            if (evacueeSet.contains(e.key)) {
+                
+                if(preType[e.key] != e.value.type){
+                    /* 登録済みピンのタイプ変更が変更されていたときの処理 (mapView.addAnnotation呼び出し時のみしか変更できない) */
+                    let oldPin = evacueeHash[e.key]
+                    mapView.removeAnnotation(oldPin!)
+                    
+                    let newPin: MKPointAnnotation = EvacueeMKPointAnnotation(id: e.value.id, type: e.value.type)
+                    let center: CLLocationCoordinate2D = CLLocationCoordinate2DMake(e.value.latitude, e.value.longitude)
+                    newPin.coordinate = center
+                    newPin.title = e.value.id
+                    mapView.addAnnotation(newPin)
+                    evacueeHash.updateValue(newPin, forKey: e.key)
+                }else{
+                    /* すでに表示済みなら座標の変更のみ */
+                    let pin = evacueeHash[e.key]
+                    let center: CLLocationCoordinate2D = CLLocationCoordinate2DMake(e.value.latitude, e.value.longitude)
+                    pin?.coordinate = center
+                    evacueeHash.updateValue(pin!, forKey: e.key)
+                }
+                
+                preType.updateValue(e.value.type, forKey: e.key)
             }else{
-                let pin: MKPointAnnotation = EvacueeMKPointAnnotation(id: e.value.id, type: e.value.type)  //0:人, 1:モノ
+                let pin: MKPointAnnotation = EvacueeMKPointAnnotation(id: e.value.id, type: e.value.type)
                 let center: CLLocationCoordinate2D = CLLocationCoordinate2DMake(e.value.latitude, e.value.longitude)
                 pin.coordinate = center
                 pin.title = e.value.id
                 mapView.addAnnotation(pin)
                 evacueeSet.insert(e.key)
                 evacueeHash.updateValue(pin, forKey: e.key)
+                
+                preType.updateValue(e.value.type, forKey: e.key)
             }
+            
         }
         
     }
@@ -191,7 +217,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         //NOTE: mapView.addAnnotation(pin) のときに呼ばれる => pin: MKPointAnnotation(: MKAnnotation)
         
-        var retAnnotation = MKAnnotationView()
+        let retAnnotation = MKAnnotationView()
         retAnnotation.annotation = annotation
         
         if let e = annotation as? EvacueeMKPointAnnotation{

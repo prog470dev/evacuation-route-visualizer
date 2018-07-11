@@ -60,7 +60,7 @@ class ApiClient {
                 return
             }
             
-            guard let data = response.result.value else {   //[?] ここの処理の必要性は？
+            guard let data = response.result.value else {
                 return
             }
 
