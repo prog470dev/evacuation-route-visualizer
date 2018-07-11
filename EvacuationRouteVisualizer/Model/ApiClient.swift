@@ -34,8 +34,10 @@ class ApiClient {
     var evacueeSet: Set<String> = Set<String>() //これいる？（ハッシュマップevacueeで存在判定はできそう）
     var evacuees: [String:Evacuee] = [:]
     
+    let intervalTime = 2.0
+    
     private init(){
-        Timer.scheduledTimer(timeInterval: 1.0,
+        Timer.scheduledTimer(timeInterval: intervalTime,
                              target: self,
                              selector: #selector(ApiClient.getLocations(timer:)),
                              userInfo: nil,
