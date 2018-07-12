@@ -42,6 +42,8 @@ class SettingViewController: UIViewController {
 
         self.view.backgroundColor = .white
         createButtons(parentView: self.view)
+        
+        ApiClient.instance.getShelterInfo() //避難所データの取得
     }
 
     override func didReceiveMemoryWarning() {
@@ -242,7 +244,8 @@ class SettingViewController: UIViewController {
         case .OK:
             //データの登録
             if(UserDataManager.instance.type == -1 || UserDataManager.instance.group == -1 ||
-               UserDataManager.instance.age == -1 || UserDataManager.instance.sex == -1){
+               UserDataManager.instance.age == -1 || UserDataManager.instance.sex == -1 ||
+               UserDataManager.instance.shelterLatitude > 500.0 || UserDataManager.instance.shelterLatitude > 500.0){
                 print("there are some missing value...")
             }else{
                 UserDataManager.instance.isStart = true

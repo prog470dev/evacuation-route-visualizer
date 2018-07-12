@@ -54,6 +54,9 @@ class UserDataManager {
     var age = -1
     var sex = -1
     
+    var shelterLatitude: Double = 1000.0    
+    var shelterLongitude: Double = 1000.0
+    
     private init(){}
     
     /* ログ・ファイル生成 */
