@@ -169,7 +169,12 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                 }else{
                     /* すでに表示済みなら座標の変更のみ */
                     let pin = evacueeHash[e.key]
-                    let center: CLLocationCoordinate2D = CLLocationCoordinate2DMake(e.value.latitude, e.value.longitude)
+                    var center: CLLocationCoordinate2D = CLLocationCoordinate2DMake(e.value.latitude, e.value.longitude)
+                    
+                    if(e.key == UserDataManager.instance.ownID){    //自分の更新のみローカルデータを使用
+                        center = (myLocationManager.location?.coordinate)!
+                    }
+                    
                     pin?.coordinate = center
                     evacueeHash.updateValue(pin!, forKey: e.key)
                 }
