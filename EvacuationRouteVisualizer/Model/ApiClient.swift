@@ -12,7 +12,7 @@ import Alamofire
 import SwiftyJSON
 
 struct Evacuee {
-    let id: String
+    var id: String
     var latitude: Double
     var longitude: Double
     
@@ -23,6 +23,16 @@ struct Evacuee {
         self.latitude = latitude
         self.longitude = longitude
         self.type = type
+    }
+}
+
+struct Shelter {
+    var latitude: Double
+    var longitude: Double
+    
+    init(latitude: Double, longitude: Double){
+        self.latitude = latitude
+        self.longitude = longitude
     }
 }
 
@@ -109,6 +119,28 @@ class ApiClient {
                 return
             }
                     
+        })
+    }
+    
+    /* 避難所データの取得 */
+    func getShelterInfo (){
+        let url = "https://storage.googleapis.com/kandeza81.appspot.com/shelter.json"
+        
+        Alamofire.request(url, method: .get).responseJSON(completionHandler: {response in
+            
+            guard let data = response.result.value else {
+                return
+            }
+            
+            let json = JSON(data)
+            
+            let shelter = Shelter(latitude: json.dictionary!["shelter"]!.dictionaryObject!["latitude"] as! Double,
+                                  longitude: json.dictionary!["shelter"]!.dictionaryObject!["longitude"] as! Double)
+            
+            UserDataManager.instance.shelterLatitude = shelter.latitude
+            UserDataManager.instance.shelterLongitude = shelter.longitude
+            
+            print("UserDataManager.instance.shelterLatitude:", UserDataManager.instance.shelterLatitude)
         })
     }
     

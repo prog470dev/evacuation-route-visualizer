@@ -82,8 +82,10 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         
         /* 避難所の表示 */
         let shelterPin: MKPointAnnotation = EvacueeMKPointAnnotation(id: "0", type: 2)  //0:人, 1:モノ, 2: 避難所
-        let shelterLat: CLLocationDegrees = 36.545413
-        let shelterLon: CLLocationDegrees = 136.705706
+//        let shelterLat: CLLocationDegrees = 36.545413
+//        let shelterLon: CLLocationDegrees = 136.705706
+        let shelterLat: CLLocationDegrees = UserDataManager.instance.shelterLatitude
+        let shelterLon: CLLocationDegrees = UserDataManager.instance.shelterLongitude
         let center: CLLocationCoordinate2D = CLLocationCoordinate2DMake(shelterLat, shelterLon)
         shelterPin.coordinate = center
         shelterPin.title = "避難所"
