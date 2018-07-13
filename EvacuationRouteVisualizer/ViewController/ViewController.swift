@@ -176,7 +176,9 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                     var center: CLLocationCoordinate2D = CLLocationCoordinate2DMake(e.value.latitude, e.value.longitude)
                     
                     if(e.key == UserDataManager.instance.ownID){    //自分の更新のみローカルデータを使用
-                        center = (myLocationManager.location?.coordinate)!
+                        if(myLocationManager.location != nil){  //一旦バックグラウンドにすると一瞬nilになる
+                            center = (myLocationManager.location?.coordinate)!
+                        }
                     }
                     
                     pin?.coordinate = center
