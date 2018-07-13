@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MapKit
 
 enum TypeValue: Int {
     case HUMAN = 0
@@ -57,7 +58,19 @@ class UserDataManager {
     var shelterLatitude: Double = 1000.0    
     var shelterLongitude: Double = 1000.0
     
+    let myLocationManager = CLLocationManager()
+    
     private init(){}
+    
+    func startGettingLocation(){
+        let status = CLLocationManager.authorizationStatus()
+        print("status: ", status.rawValue)
+        if(status != CLAuthorizationStatus.authorizedWhenInUse) {
+            print("not determined")
+            myLocationManager.requestWhenInUseAuthorization()
+        }
+        myLocationManager.startUpdatingLocation()
+    }
     
     /* ログ・ファイル生成 */
     func createLog(fileName: String){

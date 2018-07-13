@@ -29,16 +29,20 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         super.viewDidLoad()
         
         //現在地の取得
-        myLocationManager = CLLocationManager()
+        //myLocationManager = CLLocationManager()
+        myLocationManager = UserDataManager.instance.myLocationManager
         myLocationManager.delegate = self
-        myLocationManager.distanceFilter = kCLDistanceFilterNone//100.0
-        myLocationManager.desiredAccuracy = kCLLocationAccuracyBest//kCLLocationAccuracyHundredMeters
-        let status = CLLocationManager.authorizationStatus()
-        if(status != CLAuthorizationStatus.authorizedWhenInUse) {
-            print("not determined")
-            myLocationManager.requestWhenInUseAuthorization()
-        }
-        myLocationManager.startUpdatingLocation()
+        myLocationManager.distanceFilter = kCLDistanceFilterNone
+        myLocationManager.desiredAccuracy = kCLLocationAccuracyBest
+        
+        /* 設定画面ですでに許可を得ているためここでは許可取得処理をしない */
+        //TODO: 何かしらのエラーメッセージを表示する（クラッシュさせない）
+//        let status = CLLocationManager.authorizationStatus()
+//        if(status != CLAuthorizationStatus.authorizedWhenInUse) {
+//            print("not determined")
+//            myLocationManager.requestWhenInUseAuthorization()
+//        }
+//        myLocationManager.startUpdatingLocation()
         
         // MapViewの生成.
         mapView = MKMapView()
@@ -47,8 +51,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         self.view.addSubview(mapView)
         
         // 中心点の緯度経度.
-        let myLat: CLLocationDegrees = (myLocationManager.location?.coordinate.latitude)! //37.506804
-        let myLon: CLLocationDegrees = (myLocationManager.location?.coordinate.longitude)! //139.930531
+        let myLat: CLLocationDegrees = (myLocationManager.location?.coordinate.latitude)!
+        let myLon: CLLocationDegrees = (myLocationManager.location?.coordinate.longitude)!
         let myCoordinate: CLLocationCoordinate2D = CLLocationCoordinate2DMake(myLat, myLon)
         
         // 縮尺.

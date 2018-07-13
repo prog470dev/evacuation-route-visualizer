@@ -43,6 +43,8 @@ class SettingViewController: UIViewController {
         self.view.backgroundColor = .white
         createButtons(parentView: self.view)
         
+        UserDataManager.instance.startGettingLocation()  //このタイミングで位置情報取得を開始しないと落ちる
+        
         ApiClient.instance.getShelterInfo() //避難所データの取得
     }
 
@@ -177,7 +179,7 @@ class SettingViewController: UIViewController {
         }
         let _ = createTitle(text: "年代", parentView: sexButtons[0])
         
-        //OKボタン
+        /* OKボタン */
         okButton = SettingUIButton(frame: CGRect(), category: ButtonCategory.OK, data: 1)
         okButton.backgroundColor = .blue
         okButton.translatesAutoresizingMaskIntoConstraints = false
