@@ -204,7 +204,6 @@ class SettingViewController: UIViewController {
         
         label.leadingAnchor.constraint(equalTo: parentView.leadingAnchor).isActive = true  //左端
         label.bottomAnchor.constraint(equalTo: parentView.topAnchor, constant: -5.0).isActive = true  //上端
-        //label.widthAnchor.constraint(equalTo: parentView.widthAnchor, multiplier: 0.5).isActive = true    //幅
         label.widthAnchor.constraint(equalToConstant: 150.0).isActive = true
         label.heightAnchor.constraint(equalToConstant: 20.0).isActive = true   //高さ
         
@@ -242,11 +241,13 @@ class SettingViewController: UIViewController {
                 e.backgroundColor = .orange
             }
         case .OK:
-            //データの登録
+            /* データの登録 */
             if(UserDataManager.instance.type == -1 || UserDataManager.instance.group == -1 ||
-               UserDataManager.instance.age == -1 || UserDataManager.instance.sex == -1 ||
-               UserDataManager.instance.shelterLatitude > 500.0 || UserDataManager.instance.shelterLatitude > 500.0){
+               UserDataManager.instance.age == -1 || UserDataManager.instance.sex == -1){
                 print("there are some missing value...")
+            } else if(UserDataManager.instance.shelterLatitude > 500.0 || UserDataManager.instance.shelterLatitude > 500.0){
+                ApiClient.instance.getShelterInfo()
+                print("there are some missing shelter...")
             }else{
                 UserDataManager.instance.isStart = true
                 UserDataManager.instance.createLog(fileName: UserDataManager.instance.getLogFileName()) //ログファイル生成
