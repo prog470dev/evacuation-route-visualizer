@@ -8,6 +8,8 @@
 
 import UIKit
 import MapKit
+import NVActivityIndicatorView
+import SCLAlertView
 
 class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
 
@@ -24,6 +26,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     var count = 0 //ログ書き込み頻度の制限
     
     let logButton = UIButton()
+    
+    var indicatorView: NVActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,7 +75,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         //ログ送信ボタン出現のための隠しコマンド (２本指で連続１０回タップ)
         let longTap = UITapGestureRecognizer(target: self, action: #selector(ViewController.longTapGesture(sender:)))
         longTap.numberOfTouchesRequired = 2
-        longTap.numberOfTapsRequired = 10
+        longTap.numberOfTapsRequired = 5
         self.view.addGestureRecognizer(longTap)
 
         //ログ送信ボタンの設定
@@ -100,6 +104,10 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         if(myLocationManager.location != nil){
             ApiClient.instance.registEvacuee(id: uuid, coordinate: (myLocationManager.location?.coordinate)!)
         }
+        
+        indicatorView = NVActivityIndicatorView(frame: CGRect(x: self.view.frame.width/2 - 50, y: self.view.frame.height/2 - 50, width: 100, height: 100),
+                                                type: NVActivityIndicatorType.circleStrokeSpin,
+                                                color: UIColor.white)
     }
     
     @objc func longTapGesture(sender: UISwipeGestureRecognizer){
@@ -108,7 +116,23 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
     @objc func onClickLogButton(sender: UIButton) {
         print("send log.")
-        ApiClient.instance.sendLog()
+        ApiClient.instance.sendLog(waiting: {
+                                    print("waiting...")
+                                    self.view.addSubview(self.indicatorView)
+                                    self.indicatorView.startAnimating()
+        },
+                                   successCompletion: {
+                                    print("successCompletion")
+                                    self.indicatorView.stopAnimating()
+                                    self.indicatorView.removeFromSuperview()
+                                    SCLAlertView().showInfo("送信完了", subTitle: "ログが送信されました。")
+        },
+                                   eorrorCompletion: {
+                                    print("eorrorCompletion")
+                                    self.indicatorView.stopAnimating()
+                                    self.indicatorView.removeFromSuperview()
+                                    SCLAlertView().showInfo("送信失敗", subTitle: "もう一度ログを送信してください。")
+        })
         sender.removeFromSuperview()
     }
     

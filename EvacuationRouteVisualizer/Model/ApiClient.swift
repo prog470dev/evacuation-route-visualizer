@@ -145,7 +145,10 @@ class ApiClient {
     }
     
     /* 座標ログの送信 */
-    func sendLog(){
+    func sendLog(waiting: (() -> ())?, successCompletion: (() -> ())?, eorrorCompletion: (() -> ())?){
+        
+        waiting?()
+        
         let textFileName = UserDataManager.instance.getLogFileName()
         //ファイルアップロード
         let path = FileManager.default.urls(for: .documentDirectory/*.libraryDirectory*/, in: .userDomainMask).first?.appendingPathComponent(textFileName)    //作成したファイルのパス検索
@@ -159,27 +162,46 @@ class ApiClient {
                     multipartFormData: { multipartFormData in
                         // パラーメータ指定(ファイルもテキストも行ける?)
                         multipartFormData.append(data, withName: "file", fileName: textFileName, mimeType: "text/csv")
-                },
+                    },
                     to: url,
                     encodingCompletion: { encodingResult in
-//                        switch encodingResult {
-//                        case .success(let upload, _, _):
-//                            upload.responseJSON { response in
-//                                // 成功
-//                                let responseData = response
-//                                print(responseData ?? "成功")
-//                            }
-//                        case .failure(let encodingError):
-//                            // 失敗
-//                            print(encodingError)
-//                        }
+                        switch encodingResult {
+                        case .success(let upload, _, _):
+                            upload.responseJSON { response in
+                                
+                                if response == nil {
+                                    eorrorCompletion?()
+                                    return
+                                }
+                                
+                                if response.response != nil {
+                                    let statusCode: Int = (response.response?.statusCode)!
+                                    if statusCode == 200 {
+                                        //成功時の処理
+                                        successCompletion?()
+                                    }else{
+                                        //失敗時の処理
+                                        eorrorCompletion?()
+                                    }
+                                }else{
+                                    //失敗時の処理
+                                    eorrorCompletion?()
+                                }
+                            }
+                        case .failure(let encodingError):
+                            //失敗時の処理
+                            eorrorCompletion?()
+                        }
                 })
 
             } catch {
-                print("err.......")
+                //失敗時の処理
+                eorrorCompletion?()
             }
         }else{
             print("NOT FOUND!!")
+            //失敗時の処理
+            eorrorCompletion?()
         }
     }
     
