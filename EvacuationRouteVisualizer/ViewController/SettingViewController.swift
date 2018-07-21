@@ -177,7 +177,7 @@ class SettingViewController: UIViewController {
                 sexButtons[i].heightAnchor.constraint(equalTo: ageButtons[i-1].heightAnchor).isActive = true
             }
         }
-        let _ = createTitle(text: "年代", parentView: sexButtons[0])
+        let _ = createTitle(text: "性別", parentView: sexButtons[0])
         
         /* OKボタン */
         okButton = SettingUIButton(frame: CGRect(), category: ButtonCategory.OK, data: 1)
