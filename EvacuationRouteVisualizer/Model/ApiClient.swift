@@ -84,7 +84,7 @@ class ApiClient {
     
     /* 自分の現在地登録 */
     func registEvacuee(id: String, coordinate: CLLocationCoordinate2D){
-        let url = "https://" + dmain + "/user_2"
+        let url = "https://" + dmain + "/user"
         let parameters: [String: String] = [
             "id" : id,
             "latitude" : String("\(coordinate.latitude)"),
