@@ -72,7 +72,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                              userInfo: nil,
                              repeats: true)
 
-        //ログ送信ボタン出現のための隠しコマンド (２本指で連続１０回タップ)
+        //ログ送信ボタン出現のための隠しコマンド (２本指で連続５回タップ)
         let longTap = UITapGestureRecognizer(target: self, action: #selector(ViewController.longTapGesture(sender:)))
         longTap.numberOfTouchesRequired = 2
         longTap.numberOfTapsRequired = 5
