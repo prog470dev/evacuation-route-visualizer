@@ -1,11 +1,3 @@
-//
-//  AppDelegate.swift
-//  EvacuationRouteVisualizer
-//
-//  Created by 清水大樹 on 2018/05/18.
-//  Copyright © 2018 prog470dev. All rights reserved.
-//
-
 import UIKit
 
 @UIApplicationMain
