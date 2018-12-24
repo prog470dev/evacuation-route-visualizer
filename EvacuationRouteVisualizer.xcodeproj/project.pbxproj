@@ -16,6 +16,7 @@
 		D64925D220AF1BE400AC6669 /* DataCliant.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64925D120AF1BE400AC6669 /* DataCliant.swift */; };
 		D64925D420AF2B3A00AC6669 /* DBStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64925D320AF2B3A00AC6669 /* DBStub.swift */; };
 		D687FCBB20F0ABB500CA5711 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D687FCBA20F0ABB500CA5711 /* SettingViewController.swift */; };
+		D6937C7021D0FB7200612036 /* Const.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6937C6F21D0FB7200612036 /* Const.swift */; };
 		D6C4AD6520B02CC800647F5B /* EvacueeMKPointAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C4AD6420B02CC800647F5B /* EvacueeMKPointAnnotation.swift */; };
 		D6EF2D0820E37FC500D1B60A /* UserDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EF2D0720E37FC500D1B60A /* UserDataManager.swift */; };
 /* End PBXBuildFile section */
@@ -34,6 +35,7 @@
 		D64925D120AF1BE400AC6669 /* DataCliant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataCliant.swift; sourceTree = "<group>"; };
 		D64925D320AF2B3A00AC6669 /* DBStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBStub.swift; sourceTree = "<group>"; };
 		D687FCBA20F0ABB500CA5711 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
+		D6937C6F21D0FB7200612036 /* Const.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Const.swift; sourceTree = "<group>"; };
 		D6C4AD6420B02CC800647F5B /* EvacueeMKPointAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvacueeMKPointAnnotation.swift; sourceTree = "<group>"; };
 		D6EF2D0720E37FC500D1B60A /* UserDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UserDataManager.swift; path = EvacuationRouteVisualizer/Model/UserDataManager.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -123,6 +125,7 @@
 				D6C4AD6420B02CC800647F5B /* EvacueeMKPointAnnotation.swift */,
 				D6EF2D0720E37FC500D1B60A /* UserDataManager.swift */,
 				D626464020D95D7E00F96B0F /* ApiClient.swift */,
+				D6937C6F21D0FB7200612036 /* Const.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -269,6 +272,7 @@
 				D64925C020AF02C100AC6669 /* ViewController.swift in Sources */,
 				D64925BE20AF02C100AC6669 /* AppDelegate.swift in Sources */,
 				D64925D420AF2B3A00AC6669 /* DBStub.swift in Sources */,
+				D6937C7021D0FB7200612036 /* Const.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

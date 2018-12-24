@@ -39,8 +39,7 @@ struct Shelter {
 class ApiClient {
     static let instance = ApiClient()
     
-    let dmain = "kandeza81.appspot.com"
-    
+    let dmain = Const.DOMAIN
     var evacueeSet: Set<String> = Set<String>() //これいる？（ハッシュマップevacueeで存在判定はできそう）
     var evacuees: [String:Evacuee] = [:]
     
@@ -56,8 +55,7 @@ class ApiClient {
     
     /* 全ユーザの情報取得 */
     @objc func getLocations(timer: Timer){
-        
-        let url = "https://" + dmain + "/getUser"
+        let url = "https://" + dmain + "/user"
         
         Alamofire.request(url, method: .get).responseJSON(completionHandler: {response in
             
@@ -94,37 +92,36 @@ class ApiClient {
     
     /* 自分の現在地登録 */
     func registEvacuee(id: String, coordinate: CLLocationCoordinate2D){
-        
-        var url = "https://" + dmain + "/setUser?"
-        url += "id=" + id
-        url += "&latitude=" + String("\(coordinate.latitude)")
-        url += "&longitude=" + String("\(coordinate.longitude)")
-        url += "&type=" + String("\(UserDataManager.instance.type)")  //アプリのバージョンによるスクリーニングに使用
-        
-        Alamofire.request(url, method: .get).responseJSON(completionHandler: {response in
-            
-            //レスポンスが正常でないときは無視 (無視しないと落ちる)
-            guard response.response != nil else {
-                print("response.response", response.response)
-                return
-            }
-            let statusCode: Int = (response.response?.statusCode)!
-            guard statusCode == 200 else {
-                print("statusCode(@regist)", statusCode)
-                return
-            }
-            
-            //TODO: 書き込み整合の確認
-            guard let data = response.data else {
-                return
-            }
-                    
-        })
+        let url = "https://" + dmain + "/user_2"
+        let parameters: [String: String] = [
+            "id" : id,
+            "latitude" : String("\(coordinate.latitude)"),
+            "longitude" : String("\(coordinate.longitude)"),
+            "type" : String("\(UserDataManager.instance.type)"),
+        ]
+    
+        Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default)
+            .responseJSON { response in
+                //レスポンスが正常でないときは無視 (無視しないと落ちる)
+                guard response.response != nil else {
+                    print("response.response", response.response)
+                    return
+                }
+                let statusCode: Int = (response.response?.statusCode)!
+                guard statusCode == 200 else {
+                    print("statusCode(@regist)", statusCode)
+                    return
+                }
+                //TODO: 書き込み整合の確認
+                guard let data = response.data else {
+                    return
+                }
+        }
     }
     
     /* 避難所データの取得 */
     func getShelterInfo (){
-        let url = "https://storage.googleapis.com/kandeza81.appspot.com/shelter.json"
+        let url = "https://storage.googleapis.com/" + Const.DOMAIN + "/shelter.json"
         
         Alamofire.request(url, method: .get).responseJSON(completionHandler: {response in
             
@@ -156,7 +153,7 @@ class ApiClient {
         if(FileManager.default.fileExists(atPath: (path?.path)!)) { //ファイルの存在を確認
             do {
                 let data = try Data(contentsOf: path!)
-                let url = "https://" + dmain + "/upload"
+                let url = "https://" + dmain + "/log"
                 
                 Alamofire.upload(
                     multipartFormData: { multipartFormData in
