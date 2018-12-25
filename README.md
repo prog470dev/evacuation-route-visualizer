@@ -9,9 +9,11 @@
 ## 使い方
 後述する仕様を満たすようなAPIサーバを準備してアプリを起動してください。アプリが起動されると、端末ごとに自動で移動経路のログが記録されます。ログファイルは、画面上を2本指で5回連続タップすることで、アップロードすることができます。
 
+使用前に、APIサーバの設定に合わせて `evacuation-route-visualizer/EvacuationRouteVisualizer/Model/Const.swift` を編集する必要があります。
+
 ## API仕様
 以下のAPIが実装されたAPIサーバを用意してください。   
-（サンプルは[こちら](https://github.com/prog470dev/evacuation-route-visualizer-back-sample)）
+（実装サンプルは[こちら](https://github.com/prog470dev/evacuation-route-visualizer-back-sample)）
 ### Get User
 全ユーザの情報を取得します。
 #### URL
