@@ -66,7 +66,7 @@ CSV形式のファイルをアップロード
 以下のDDLで定義されるテーブルを想定しています。
 ### DDL
 ```
-CREATE DATABASE app;
-CREATE TABLE app.users (id INT, latitude DOUBLE, longitude DOUBLE, type INT);
+CREATE DATABASE goapp;
+CREATE TABLE goapp.users (id TEXT, latitude TEXT, longitude TEXT, type TEXT);
 ALTER TABLE goapp.users ADD PRIMARY KEY(id(255));
 ```
